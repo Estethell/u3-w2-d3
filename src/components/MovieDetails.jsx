@@ -7,10 +7,11 @@ const MovieDectails = () => {
   const [movieObj, setMovieObj] = useState([]);
 
   const params = useParams();
+  console.log(params);
 
   const fetchMovies = () => {
     const url = "http://www.omdbapi.com/?apikey=e8901073&i=";
-    fetch(url + params.imdbID)
+    fetch(url + params.movieId)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -19,12 +20,7 @@ const MovieDectails = () => {
         }
       })
       .then((apiItems) => {
-        // this.setState({ arrayOfMovies: ApiItems.Search.slice(0, 6), loader: false });
-        const rightMovieToShow = apiItems.find((b) => b.imdbID === parseInt(params.movieId));
-
-        if (rightMovieToShow) {
-          setMovieObj(rightMovieToShow);
-        }
+        setMovieObj(apiItems);
       })
       .catch((error) => {
         console.log("errore", error);
@@ -38,8 +34,9 @@ const MovieDectails = () => {
   return (
     <div>
       <h2>Vediamo nel dettaglio:</h2>
+
       <Card>
-        <Card.Img src={movieObj.Poster} alt="Locandina" />
+        <Card.Img src={movieObj.Poster} alt="Locandina" style={{ width: "200px" }} />
         <Card.Body>
           <Card.Title>{movieObj.Title}</Card.Title>
           <Card.Text>{movieObj.Plot}</Card.Text>
